@@ -14,7 +14,7 @@
     "debug": "~2.6.9",
     "depd": "^2.0.0",
     "destroy": "^1.0.4",
-    "ejs": "^1.0.0",
+    "ejs": "^2.5.5",
     "etag": "^1.8.1",
     "express": "~4.16.1",
     "express-ejs-layouts": "^1.1.0",
