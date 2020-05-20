@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<style type="text/css">
+			body {
+				padding: 50px;
+				font: 14px "Lucida Grande", Helvetica, Arial, sans-serif;
+			}
+			table {
+				border: solid 3px;
+			}
+			table th {
+				padding: .75rem;
+				border-bottom: 2px solid #dee2e6;
+			}
+			tfoot tr {
+				padding: .75rem;
+				border-top: 2px solid #dee2e6;
+			}
+			td {
+				text-align: center;
+			}
+		</style>
+	</head>
+	<body>
+
+		<main>
+
+			<div>
+				<table>
+					<thead>
+						<tr>
+							<th>Entity</th>
+							<th>Value1</th>
+							<th>Value2</th>
+							<th>Value3</th>
+							<th>Value4</th>
+							<th>Value5</th>
+						</tr>
+					</thead>
+					<tbody id='content'>
+						<% data.data.forEach(function(result) { %>
+							<tr>
+								<td id="id">Entity<%= result.id %></td>
+								<% result.value.forEach(function(val) { %>
+									<% if (val < 0) { %>
+										<td class="type1"><%= val %></td>
+									<% } else if(val > 0) { %>
+										<td class="type2"><%= val %></td>
+									<% } else if (val == 0) { %>
+										<td class="type3"><%= val %></td>
+									<% } %>
+								<% }); %>
+							</tr>
+						<%  }); %>
+					</tbody>
+					<tfoot id="total">
+						<tr>
+							<td>Total</td>
+							<% data.total.forEach(function(subtotal) { %>
+								<td><%= subtotal %></td>
+							<%  }); %>
+						</tr>
+					</tfoot>
+				</table>
+			</div>
+		</main>
+	
+	</body>
+</html>
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+<script>
+	$(document).ready(function() {
+		function formatCell() {
+			$('.type1').each(function(id, val){
+				v = $(val).html();
+				$(val).css('background', 'rgba(255, 140, 0, '+Math.abs(v)+')');
+				$(val).css('color', 'rgba(0, 115, 255'+')');
+			})
+			$('.type2').each(function(id, val){
+				v = $(val).html();
+				if (v > 0.5) {
+					$(val).css('background', 'rgba(0, 0, 0, '+(Math.abs(v))+')');
+					$(val).css('color', 'rgba(255, 255, 255'+')');
+				}
+				else {
+					$(val).css('background', 'rgba(0, 0, 0, '+(1.0000 - Math.abs(v))+')');
+					$(val).css('color', 'rgba(255, 255, 255'+')');
+				}
+			})
+			$('.type3').each(function(id, val){
+				v = $(val).html();
+				$(val).css('background', 'rgba(255, 255, 255)');
+				$(val).css('color', 'rgba(0, 0, 0)');
+			})
+		}
+
+		formatCell()
+
+		setInterval(function() {
+			$.get('/getData', function(data) {
+				content = ''
+				data.result.arr.forEach(function(result) {
+					val_arr = result.value.split('_')
+					content += '<tr>'
+					content += '<td id="id">Entity'+result.id+'</td>'
+					val_arr.forEach(function(val) {
+						if (val < 0)
+							content += '<td class="type1">'
+						else if(val > 0)
+							content += '<td class="type2">'
+						else if (val == 0)
+							content += '<td class="type3">'
+						content += val + '</td>'
+					})
+					content += '</tr>'
+				});
+
+				$('#content').html(content)
+
+				content = '';
+				content += '<tr>'
+				content += '<td>Total</td>'
+				data.result.total.forEach(function(subtotal) {
+					content += '<td>' + subtotal + '</td>';
+				})
+				content += '</tr>'
+				$('#total').html(content);
+
+				formatCell()
+			})
+
+		}, 5000)
+	})
+</script>
