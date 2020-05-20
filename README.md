@@ -14,7 +14,7 @@
 
 To add them, you need to use postman
 
-![Adding](./public/images/Add Entity.png "Adding")
+![Adding](./public/images/Add-Entity.png "Adding")
 
 - run the app
 
