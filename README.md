@@ -10,6 +10,10 @@
 
     mongo
 
+- install npm packages
+
+    npm install
+
 - add some seed datas
 
 To add them, you need to use postman
