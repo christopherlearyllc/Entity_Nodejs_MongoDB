@@ -16,7 +16,7 @@
     "destroy": "^1.0.4",
     "ejs": "^1.0.0",
     "etag": "^1.8.1",
-    "express": "~4.16.1",
+    "express": "~4.17.3",
     "express-ejs-layouts": "^1.1.0",
     "express-validator": "^6.5.0",
     "finalhandler": "^1.1.2",
